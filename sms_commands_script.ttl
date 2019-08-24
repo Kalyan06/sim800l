@@ -1,0 +1,16 @@
+CRLF = #13#10#10 /* New line */
+dispstr 'SMS SETUP' CRLF
+sendln 'AT'
+wait 'OK'
+sendln 'AT+CSQ'
+wait 'OK'
+sendln 'AT+CMGF=1'
+wait 'OK' 'ERROR'
+sendln 'AT+CSCS="GSM"'
+wait 'OK' 'ERROR'
+dispstr CRLF 'Press ctrl+z to send message' CRLF
+sendln 'AT+CMGS="+9183xxxxxxxx"'
+mpause 500
+sendln 'Hello, Welcome to SIM800l SMS.'
+wait 'OK'
+dispstr 'Done!' CRLF
