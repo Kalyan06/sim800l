@@ -1,0 +1,49 @@
+CRLF = #13#10#10 /* New line */
+dispstr 'Start ' CRLF
+gettime now "%Y/%m/%d %H:%M:%S" /* Starting time */
+dispstr now CRLF
+sendln 'AT'
+wait 'OK'
+sendln 'AT+CSQ' /* Signal strength */
+mpause 500
+sendln 'AT+SAPBR=3,1,"Contype","GPRS"'
+wait 'OK'
+sendln 'AT+SAPBR=3,1,"APN","airtelgprs.com"'
+wait 'OK'
+sendln 'AT+SAPBR=1,1'  /*To enable GPRS */
+wait 'OK' 'ERROR'
+sendln 'AT+SAPBR=2,1' /*It prints Ip address*/
+wait 'OK'
+sendln 'AT+EMAILCID=1'
+wait 'OK'
+sendln 'AT+EMAILTO=65' /* email timeout */
+wait 'OK'
+sendln 'AT+EMAILSSL=1' /* SSL configuration */
+wait 'OK' 'ERROR'
+sendln 'AT+SMTPSRV="smtp.gmail.com"' /* SMTP setup*/ 
+wait 'OK' 'ERROR'
+sendln 'AT+SMTPAUTH=1,"sender_email@gmail.com","password"'
+wait 'OK' 'ERROR'
+sendln 'AT+SMTPFROM="sender_email@gmail.com","Name"'
+wait 'OK' 'ERROR'
+sendln 'AT+SMTPRCPT=0,0,"receiver_email.com","Name"'
+wait 'OK' 'ERROR'
+/*sendln 'AT+SMTPRCPT=1,0,"example@gmail.com","Example Name"' (CC)
+wait 'OK' 
+sendln 'AT+SMTPRCPT=2,0,"example1@gmail.com","Example"' (BCC)
+wait 'OK'*/
+sendln 'AT+SMTPSUB="SIM800l' /* Subject */
+wait 'OK' 'ERROR'
+sendln 'AT+SMTPBODY=18' /* Message body size */
+mpause 900
+sendln 'Email from SIM800l'
+wait 'OK' 'ERROR'
+gettime now "%Y/%m/%d %H:%M:%S"
+dispstr CRLF now CRLF
+sendln 'AT+SMTPSEND' /* Sending email */
+wait '+SMTPSEND: 1' '+SMTPSEND: 63'	'+SMTPSEND: 65' /* +SMTPSEND: 1 -> email success code.*/
+sendln 'AT+SAPBR=0,1' /* Disable GPRS */
+wait 'OK' 'ERROR'
+gettime now "%Y/%m/%d %H:%M:%S" /* Mesuring time taken for sending an email */
+dispstr CRLF now CRLF
+dispstr "Done! " CRLF
