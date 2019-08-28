@@ -13,4 +13,4 @@ sendln 'AT+CMGS="+9183xxxxxxxx"'
 mpause 500
 sendln 'Hello, Welcome to SIM800l SMS.'
 wait 'OK'
-dispstr 'Done!' CRLF
+dispstr CRLF 'Done!' CRLF
