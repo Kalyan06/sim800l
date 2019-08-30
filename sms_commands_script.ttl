@@ -12,5 +12,5 @@ dispstr CRLF 'Press ctrl+z to send message' CRLF
 sendln 'AT+CMGS="+9183xxxxxxxx"'
 mpause 500
 sendln 'Hello, Welcome to SIM800l SMS.'
-wait 'OK'
+wait 'OK' 'ERROR'
 dispstr CRLF 'Done!' CRLF
