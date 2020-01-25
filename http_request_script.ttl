@@ -1,0 +1,49 @@
+CRLF = #13#10#10 /* New line */
+dispstr CRLF '#########################'
+dispstr CRLF '###### HTTP REQUEST #####'
+dispstr CRLF '#########################'
+sendln 'ATE1'				/* Echo on */
+wait 'OK'
+sendln 'AT'					/* AT for test */
+wait 'OK'
+sendln 'AT+CFUN=0'			/* To disable modem */
+wait 'OK'
+pause 2
+sendln 'AT+CFUN=1'			/* To enable modem */
+wait 'OK'
+wait 'SMS Ready'
+dispstr CRLF 'Got SMS Ready.' CRLF
+wait 'Call Ready'
+dispstr CRLF 'Got Call Ready.' CRLF
+sendln 'AT+CREG?'			/* To find SIM registration status */
+wait 'OK'
+sendln 'AT+CSQ'				/* To get signal strength */
+wait 'OK'
+sendln 'AT+CSPN?'			/* To find service provider */
+wait 'OK' 'ERROR'
+sendln 'AT+SAPBR=3,1,"Contype","GPRS"' /* Configuring GRPS*/
+wait 'OK'
+sendln 'AT+SAPBR=3,1,"APN","airtelgprs.com"'	/* APN configuration */
+wait 'OK' 'ERROR'
+sendln 'AT+SAPBR=1,1'  		/* To enable GPRS */
+wait 'OK' 'ERROR'
+sendln 'AT+SAPBR=2,1' 		/* It prints Ip address */
+wait 'OK' 'ERROR'
+sendln 'AT+HTTPINIT'  		/* Initialize HTTP Service  */
+wait 'OK' 'ERROR'
+sendln 'AT+HTTPPARA="CID",1'/* Http settings */
+wait 'OK' 'ERROR'
+gettime now "%Y/%m/%d %H:%M:%S"
+dispstr CRLF now  CRLF
+sendln 'AT+HTTPPARA="URL","http://www.google.co.in"'
+wait 'OK' 'ERROR'
+sendln 'AT+HTTPACTION=0'	/* Calling url 0-Read*/
+wait '+HTTPACTION:' 'ERROR'
+gettime now "%Y/%m/%d %H:%M:%S" 
+dispstr CRLF now CRLF
+sendln 'AT+HTTPREAD=0,60' 	/* To see the response */
+wait 'OK' 'ERROR'
+sendln 'AT+HTTPTERM'		/* Disable HTTP service*/
+wait 'OK' 'ERROR'
+sendln 'AT+SAPBR=0,1' 		/* Disable GPRS */
+wait 'OK' 'ERROR'
